@@ -29,11 +29,11 @@ namespace Day02
 		{
 			var sides = lineItem.Split(':');
 			var leftSideItems = sides[0].Split(' ');
-			var minMaxValues = leftSideItems[0].Split('-').Select(int.Parse).ToList();
+			var ruleValues = leftSideItems[0].Split('-').Select(int.Parse).ToList();
 
 			var verifcation = new PasswordVerification
 			{
-				RuleValues = new Tuple<int, int>(minMaxValues[0], minMaxValues[1]),
+				RuleValues = new Tuple<int, int>(ruleValues[0], ruleValues[1]),
 				Character = leftSideItems[1].Trim(),
 				Password = sides[1].Trim()
 			};
