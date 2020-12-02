@@ -20,8 +20,9 @@ namespace Day02
 				verificationRequests.Add(ParsePasswordVerification(lineItem));
 			}
 
-			var failureCount = verificationRequests.Select(VerifyPassword).Count(b => b);
-			Console.WriteLine($"Valid passwords: {failureCount}");
+			var validCount = verificationRequests.Select(VerifyPassword_Part1).Count(b => b);
+			Console.WriteLine($"Valid passwords: {validCount}");
+
 		}
 
 		private static PasswordVerification ParsePasswordVerification(string lineItem)
@@ -40,7 +41,7 @@ namespace Day02
 			return verifcation;
 		}
 
-		private static bool VerifyPassword(PasswordVerification verification)
+		private static bool VerifyPassword_Part1(PasswordVerification verification)
 		{
 			var characterCount = verification.Password.Where(c => c.ToString().Equals(verification.Character)).Count();
 			return IsInRange(characterCount, verification.RuleValues);
