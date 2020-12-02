@@ -23,6 +23,8 @@ namespace Day02
 			var validCount = verificationRequests.Select(VerifyPassword_Part1).Count(b => b);
 			Console.WriteLine($"Valid passwords: {validCount}");
 
+			validCount = verificationRequests.Select(VerifyPassword_Part2).Count(b => b);
+			Console.WriteLine($"Valid passwords: {validCount}");
 		}
 
 		private static PasswordVerification ParsePasswordVerification(string lineItem)
@@ -50,6 +52,14 @@ namespace Day02
 		private static bool IsInRange(int value, Tuple<int, int> minMax)
 		{
 			return value >= minMax.Item1 && value <= minMax.Item2;
+		}
+
+		private static bool VerifyPassword_Part2(PasswordVerification verification)
+		{
+			var position1 = verification.Password[verification.RuleValues.Item1-1].ToString();
+			var position2 = verification.Password[verification.RuleValues.Item2-1].ToString();
+
+			return (position1.Equals(verification.Character) || position2.Equals(verification.Character)) && !(position1.Equals(verification.Character) && position2.Equals(verification.Character));
 		}
 	}
 }
