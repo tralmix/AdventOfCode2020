@@ -32,7 +32,7 @@ namespace Day02
 
 			var verifcation = new PasswordVerification
 			{
-				MinMax = new MinMax { Min = minMaxValues[0], Max = minMaxValues[1] },
+				RuleValues = new Tuple<int, int>(minMaxValues[0], minMaxValues[1]),
 				Character = leftSideItems[1].Trim(),
 				Password = sides[1].Trim()
 			};
@@ -43,12 +43,12 @@ namespace Day02
 		private static bool VerifyPassword(PasswordVerification verification)
 		{
 			var characterCount = verification.Password.Where(c => c.ToString().Equals(verification.Character)).Count();
-			return IsInRange(characterCount, verification.MinMax);
+			return IsInRange(characterCount, verification.RuleValues);
 		}
 
-		private static bool IsInRange(int value, MinMax minMax)
+		private static bool IsInRange(int value, Tuple<int, int> minMax)
 		{
-			return value >= minMax.Min && value <= minMax.Max;
+			return value >= minMax.Item1 && value <= minMax.Item2;
 		}
 	}
 }
