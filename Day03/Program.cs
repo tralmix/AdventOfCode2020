@@ -36,6 +36,8 @@ namespace Day03
 
 			Console.WriteLine($"Tree count is {treeCount}");
 
+			// Part Two
+
 			var slopes = new List<Slope> {
 				new Slope { down = 1, right=1 },
 				new Slope { down = 1, right=3 },
