@@ -68,7 +68,7 @@ namespace Day03
 				Console.WriteLine($"Tree count is {treeCount}");
 			}
 
-			var product = treeCounts.Aggregate((long)1, (a, b) => a * b);
+			var product = treeCounts.Aggregate((a, b) => a * b);
 
 			Console.WriteLine($"Product of tree lines is {product}");
 		}
