@@ -20,7 +20,7 @@ namespace Day03
 				inputLines.Add(lineItem);
 			}
 
-			var treeLines = GetExpandedTreeLines(inputLines);
+			var treeLines = GetExpandedTreeLines(inputLines, 3);
 
 			int treeCount = 0, rightIndex = 0, downIndex = 0;
 
@@ -35,18 +35,59 @@ namespace Day03
 			} while (downIndex < treeLines.Count());
 
 			Console.WriteLine($"Tree count is {treeCount}");
+
+			var slopes = new List<Slope> {
+				new Slope { down = 1, right=1 },
+				new Slope { down = 1, right=3 },
+				new Slope { down = 1, right=5 },
+				new Slope { down = 1, right=7 },
+				new Slope { down = 2, right=1 },
+			};
+
+			var treeCounts = new List<long>();
+
+			foreach(var slope in slopes)
+			{
+				treeLines = GetExpandedTreeLines(inputLines, slope.right);
+				treeCount = 0;
+				rightIndex = 0;
+				downIndex = 0;
+
+				do
+				{
+					if (treeLines[downIndex][rightIndex].Equals('#'))
+						treeCount++;
+
+					rightIndex += slope.right;
+					downIndex += slope.down;
+
+				} while (downIndex < treeLines.Count());
+
+				treeCounts.Add(treeCount);
+
+				Console.WriteLine($"Tree count is {treeCount}");
+			}
+
+			var product = treeCounts.Aggregate((long)1, (a, b) => a * b);
+
+			Console.WriteLine($"Product of tree lines is {product}");
 		}
 
-		private static List<List<char>> GetExpandedTreeLines(List<string> inputLines)
+		private static List<List<char>> GetExpandedTreeLines(List<string> inputLines, int slope)
 		{
 			var treeLines = inputLines.Select(x => x.ToArray().ToList()).ToList();
-			while (treeLines[0].Count() < 3* treeLines.Count())
+			while (treeLines[0].Count() < slope * treeLines.Count())
 			{
 				foreach (var line in treeLines)
 					line.AddRange(line);
 			}
 
 			return treeLines;
+		}
+		struct Slope
+		{
+			public int down;
+			public int right;
 		}
 	}
 }
