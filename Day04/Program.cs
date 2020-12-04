@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Day04
@@ -69,6 +70,11 @@ namespace Day04
 
 			var validPassports = passports.Where(p => p.IsValid_Part1()).Count();
 			Console.WriteLine($"Valid passports: {validPassports}");
+
+			// Part 2
+
+			validPassports = passports.Where(p => p.IsValid_Part1() && p.IsValid_Part2()).Count();
+			Console.WriteLine($"Valid passports: {validPassports}");
 		}
 
 		class Passport
@@ -91,6 +97,39 @@ namespace Day04
 					|| string.IsNullOrWhiteSpace(HairColor)
 					|| string.IsNullOrWhiteSpace(EyeColor)
 					|| string.IsNullOrWhiteSpace(PassportId))
+					return false;
+
+				return true;
+			}
+			
+			public bool IsValid_Part2()
+			{
+				// Birth Year
+				if (!new Regex("^(19[2-9][0-9])|(200[0-2])$").IsMatch(BirthYear))
+					return false;
+
+				// Issue Year
+				if (!new Regex("^20(1[0-9]|20)$").IsMatch(IssueYear))
+					return false;
+
+				// Expiration Year
+				if (!new Regex("^20(2[0-9]|30)$").IsMatch(ExpirationYear))
+					return false;
+
+				// Height
+				if (!new Regex("^1([5-8][0-9]|9[0-3])cm$|^(59|6[0-9]|7[0-6])in$").IsMatch(Height))
+					return false;
+
+				// Hair Color
+				if (!new Regex("^#[0-9a-f]{6}$").IsMatch(HairColor)) 
+					return false;
+
+				// Eye Color
+				if (!new Regex("^amb$|^blu$|^brn$|^gry$|^grn$|^hzl$|^oth$").IsMatch(EyeColor)) 
+					return false;
+
+				// Passport Id
+				if (!new Regex("^[0-9]{9}$").IsMatch(PassportId)) 
 					return false;
 
 				return true;
