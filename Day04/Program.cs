@@ -65,6 +65,7 @@ namespace Day04
 					}
 				}
 			}
+			passports.Add(passport);
 
 			var validPassports = passports.Where(p => p.IsValid_Part1()).Count();
 			Console.WriteLine($"Valid passports: {validPassports}");
