@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Day05
@@ -19,6 +20,7 @@ namespace Day05
 			}
 
 			// Part One
+			var seats = new List<int>();
 			var highestSeatId = 0;
 
 			foreach(var input in inputLines)
@@ -27,10 +29,17 @@ namespace Day05
 				var column = FindColumn(0, 7, input.Substring(7));
 				var seatId = CalculateSeatId(row, column);
 				if (seatId > highestSeatId) highestSeatId = seatId;
+
+				// Part 2
+				seats.Add(seatId);
 			}
 
 			Console.WriteLine($"Highest seat id is {highestSeatId}");
 
+			seats.Sort();
+			var mySeat = seats.Aggregate(seats[0], (current, next) => next == current + 1 ? next : current) + 1;
+
+			Console.WriteLine($"My seat is {mySeat}");
 		}
 
 		static int FindRow(int start, int end, string input)
