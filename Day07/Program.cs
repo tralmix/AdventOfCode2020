@@ -20,6 +20,18 @@ namespace Day07
 				inputLines.Add(lineItem);
 			}
 
+			var bags = CreateBagObjects(inputLines);
+
+			var bagToBeHeld = "shiny gold";
+
+			Part_One(bags, bagToBeHeld);
+
+			Part_Two(bags, bagToBeHeld);
+
+		}
+
+		private static List<Bag> CreateBagObjects(List<string> inputLines)
+		{
 			var bags = new List<Bag>();
 			foreach (var input in inputLines)
 			{
@@ -27,15 +39,26 @@ namespace Day07
 				bags.Add(bag);
 			}
 
+			return bags;
+		}
+
+		private static void Part_Two(List<Bag> bags, string bagToBeHeld)
+		{
+			var totalBagsContained = BagsContained(bags.First(b => b.Color == bagToBeHeld), bags);
+
+			Console.WriteLine($"Total bags contained withing {bagToBeHeld}: {totalBagsContained}");
+		}
+
+		private static void Part_One(List<Bag> bags, string bagToBeHeld)
+		{
 			var working = true;
-			var bagToBeHeld = "shiny gold";
 			var bagsThatCanHold = bags.Where(b => b.CanHold.Any(x => x.Item2.Equals(bagToBeHeld))).ToList();
 
 			while (working)
 			{
 				var bagsToCheck = bags.Where(b => !bagsThatCanHold.Any(x => x.Color == b.Color));
-				var additionalBagsThatCanHold = bagsToCheck.Where(b => b.CanHold.Any(x => bagsThatCanHold.Select(x=>x.Color).Contains(x.Item2)));
-				if(additionalBagsThatCanHold.Count() > 0)
+				var additionalBagsThatCanHold = bagsToCheck.Where(b => b.CanHold.Any(x => bagsThatCanHold.Select(x => x.Color).Contains(x.Item2)));
+				if (additionalBagsThatCanHold.Count() > 0)
 				{
 					bagsThatCanHold.AddRange(additionalBagsThatCanHold);
 					continue;
@@ -46,11 +69,6 @@ namespace Day07
 			}
 
 			Console.WriteLine($"Total bags that can contain {bagToBeHeld}: {bagsThatCanHold.Count}");
-
-			var totalBagsContained = BagsContained(bags.First(b=>b.Color == bagToBeHeld), bags);
-
-			Console.WriteLine($"Total bags contained withing {bagToBeHeld}: {totalBagsContained}");
-
 		}
 
 		private static int BagsContained(Bag bag, List<Bag> bags)
