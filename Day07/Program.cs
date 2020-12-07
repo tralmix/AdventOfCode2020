@@ -10,15 +10,7 @@ namespace Day07
 	{
 		static async Task Main(string[] args)
 		{
-			// Get input
-			var inputLines = new List<string>();
-			using var reader = new System.IO.StreamReader("Input.txt");
-			while (reader.Peek() > -1)
-			{
-				var lineItem = await reader.ReadLineAsync();
-
-				inputLines.Add(lineItem);
-			}
+			var inputLines = await ReadInputLines();
 
 			var bags = CreateBagObjects(inputLines);
 
@@ -28,6 +20,20 @@ namespace Day07
 
 			Part_Two(bags, bagToBeHeld);
 
+		}
+		private static async Task<List<string>> ReadInputLines()
+		{
+			var inputLines = new List<string>();
+
+			using var reader = new System.IO.StreamReader("Input.txt");
+			while (reader.Peek() > -1)
+			{
+				var lineItem = await reader.ReadLineAsync();
+
+				inputLines.Add(lineItem);
+			}
+
+			return inputLines;
 		}
 
 		private static List<Bag> CreateBagObjects(List<string> inputLines)
