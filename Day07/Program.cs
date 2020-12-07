@@ -26,12 +26,32 @@ namespace Day07
 				var bag = BuildBag(input);
 				bags.Add(bag);
 			}
+
+			var working = true;
+			var bagToBeHeld = "shiny gold";
+			var bagsThatCanHold = bags.Where(b => b.CanHold.Any(x => x.Item2.Equals(bagToBeHeld))).ToList();
+
+			while (working)
+			{
+				var bagsToCheck = bags.Where(b => !bagsThatCanHold.Any(x => x.Color == b.Color));
+				var additionalBagsThatCanHold = bagsToCheck.Where(b => b.CanHold.Any(x => bagsThatCanHold.Select(x=>x.Color).Contains(x.Item2)));
+				if(additionalBagsThatCanHold.Count() > 0)
+				{
+					bagsThatCanHold.AddRange(additionalBagsThatCanHold);
+					continue;
+				}
+
+				// No more bags found. Stop working.
+				working = false;
+			}
+
+			Console.WriteLine($"Total bags that can contain {bagToBeHeld}: {bagsThatCanHold.Count}");
 		}
 
 		private static Bag BuildBag(string input)
 		{
 			var bag = new Bag();
-			var bagsContainRegex = new Regex("^bag(s[\x2E,\x2C]?)?$|^contain$");
+			var bagsContainRegex = new Regex("^bag(s?[\\.,\\,]?)?$|^contain$");
 			var numericRegex = new Regex("^[0-9]+$");
 			var words = input.Split(" ");
 			var color = string.Empty;
