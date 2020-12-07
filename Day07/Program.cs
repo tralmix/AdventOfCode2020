@@ -46,6 +46,25 @@ namespace Day07
 			}
 
 			Console.WriteLine($"Total bags that can contain {bagToBeHeld}: {bagsThatCanHold.Count}");
+
+			var totalBagsContained = BagsContained(bags.First(b=>b.Color == bagToBeHeld), bags);
+
+			Console.WriteLine($"Total bags contained withing {bagToBeHeld}: {totalBagsContained}");
+
+		}
+
+		private static int BagsContained(Bag bag, List<Bag> bags)
+		{
+			var total = bag.CanHold.Select(c=>c.Item1).Sum();
+			foreach(var item in bag.CanHold)
+			{
+				var nextBag = bags.FirstOrDefault(b => b.Color == item.Item2);
+				if(nextBag is null) continue;
+
+				total += item.Item1 * BagsContained(nextBag, bags);
+			}
+
+			return total;
 		}
 
 		private static Bag BuildBag(string input)
