@@ -14,12 +14,16 @@ namespace Day08
 			var commands = inputLines.Select(BuildCommand).ToList();
 
 			// Part One
-			int accumulator = RunProgram(commands, out bool successful);
-
-			Console.WriteLine($"Accumulator value when loop starts is {accumulator}");
+			PartOne(commands);
 
 			// Part Two
+			PartTwo(commands);
+		}
+
+		private static void PartTwo(List<Command> commands)
+		{
 			var working = true;
+			var accumulator = 0;
 			for (var index = 0; index < commands.Count && working; index++)
 			{
 				if (commands[index].Instruction == Instructions.Accumulator) continue;
@@ -40,12 +44,18 @@ namespace Day08
 						Value = commands[index].Value
 					};
 
-				accumulator = RunProgram(alteredCommands, out successful);
+				accumulator = RunProgram(alteredCommands, out var successful);
 
 				if (successful) working = false;
 			}
 
 			Console.WriteLine($"Accumulator value upon success is {accumulator}");
+		}
+
+		private static void PartOne(List<Command> commands)
+		{
+			var accumulator = RunProgram(commands, out _);
+			Console.WriteLine($"Accumulator value when loop starts is {accumulator}");
 		}
 
 		private static int RunProgram(List<Command> commands, out bool successful)
