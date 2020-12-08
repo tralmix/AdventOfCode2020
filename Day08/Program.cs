@@ -13,6 +13,44 @@ namespace Day08
 
 			var commands = inputLines.Select(BuildCommand).ToList();
 
+			// Part One
+			int accumulator = RunProgram(commands, out bool successful);
+
+			Console.WriteLine($"Accumulator value when loop starts is {accumulator}");
+
+			// Part Two
+			var working = true;
+			for (var index = 0; index < commands.Count && working; index++)
+			{
+				if (commands[index].Instruction == Instructions.Accumulator) continue;
+
+				var alteredCommands = new List<Command>(commands);
+				if (alteredCommands[index].Instruction == Instructions.Jump)
+					alteredCommands[index] = new Command
+					{
+						Instruction = Instructions.NoOperation,
+						Direction = commands[index].Direction,
+						Value = commands[index].Value
+					};
+				else
+					alteredCommands[index] = new Command
+					{
+						Instruction = Instructions.Jump,
+						Direction = commands[index].Direction,
+						Value = commands[index].Value
+					};
+
+				accumulator = RunProgram(alteredCommands, out successful);
+
+				if (successful) working = false;
+			}
+
+			Console.WriteLine($"Accumulator value upon success is {accumulator}");
+		}
+
+		private static int RunProgram(List<Command> commands, out bool successful)
+		{
+			successful = false;
 			var commandsCalled = new List<int>();
 
 			var working = true;
@@ -22,7 +60,7 @@ namespace Day08
 
 			while (working)
 			{
-				if (commandsCalled.Contains(index))
+				if (commandsCalled.Contains(index) || index >= commands.Count)
 				{
 					working = false;
 					continue;
@@ -48,7 +86,12 @@ namespace Day08
 				}
 			}
 
-			Console.WriteLine($"Accumulator value when loop starts is {accumulator}");
+			if (index == commands.Count)
+			{
+				successful = true;
+			}
+
+			return accumulator;
 		}
 
 		private static async Task<List<string>> ReadInputLines()
