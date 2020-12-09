@@ -15,9 +15,41 @@ namespace Day09
 			var inputAsIntegers = inputLines.Select(long.Parse).ToList();
 
 			// Part One
-			int index = FindInvalidIndex(preamble, inputAsIntegers);
+			int failedIndex = FindInvalidIndex(preamble, inputAsIntegers);
 
-			Console.WriteLine($"First number to fail is {inputAsIntegers[index]}");
+			Console.WriteLine($"First number to fail is {inputAsIntegers[failedIndex]}");
+
+			// Part Two
+
+			long minMaxSum = FindMinMaxSumFromRangeThatSumsToFailedIndex(inputAsIntegers, failedIndex);
+
+			Console.WriteLine($"Sum of min max in range is {minMaxSum}");
+		}
+
+		private static long FindMinMaxSumFromRangeThatSumsToFailedIndex(List<long> inputAsIntegers, int failedIndex)
+		{
+			var index = 0;
+			int innerIndex;
+			var rangeFound = false;
+			do
+			{
+				var workingValue = inputAsIntegers[index];
+				innerIndex = index + 1;
+				while (workingValue < inputAsIntegers[failedIndex])
+				{
+					workingValue += inputAsIntegers[innerIndex];
+					innerIndex++;
+				}
+
+				if (workingValue == inputAsIntegers[failedIndex])
+					rangeFound = true;
+				else
+					index++;
+			} while (!rangeFound && index < failedIndex);
+
+			var range = inputAsIntegers.GetRange(index, innerIndex - index);
+			var minMaxSum = range.Min() + range.Max();
+			return minMaxSum;
 		}
 
 		private static int FindInvalidIndex(int preamble, List<long> inputAsIntegers)
@@ -26,7 +58,7 @@ namespace Day09
 			var index = preamble;
 			do
 			{
-				if (!inputAsIntegers[index].IsSum(inputAsIntegers.GetRange(index - preamble, preamble)))
+				if (!inputAsIntegers[index].HasSum(inputAsIntegers.GetRange(index - preamble, preamble)))
 					working = false;
 				else
 					index++;
@@ -52,7 +84,7 @@ namespace Day09
 
 	public static class IntExtension
 	{
-		public static bool IsSum(this long value, List<long> options)
+		public static bool HasSum(this long value, List<long> options)
 		{
 			if (options.Any(x => options.Any(y => x != y && x + y == value)))
 				return true;
