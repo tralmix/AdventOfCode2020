@@ -14,6 +14,7 @@ namespace Day10
 			var inputAsOrderedIntegers = inputLines.Select(int.Parse).OrderBy(x => x).ToList();
 
 			// Add my device to list
+			inputAsOrderedIntegers.Insert(0, 0);
 			inputAsOrderedIntegers.Add(inputAsOrderedIntegers.Max() + 3);
 
 			PartOne(inputAsOrderedIntegers);
@@ -23,7 +24,6 @@ namespace Day10
 
 		private static void PartTwo(List<int> inputAsOrderedIntegers)
 		{
-			inputAsOrderedIntegers.Insert(0, 0);
 			var allLines = GetLinePairs(inputAsOrderedIntegers);
 			Console.WriteLine($"There are {allLines.Count()} graph lines");
 
@@ -68,7 +68,7 @@ namespace Day10
 		{
 			var differences = new List<int>();
 
-			inputAsOrderedIntegers.Aggregate(0, (current, next) =>
+			inputAsOrderedIntegers.Aggregate((current, next) =>
 			{
 				differences.Add(next - current);
 				return next;
