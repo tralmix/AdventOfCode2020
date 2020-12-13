@@ -11,8 +11,13 @@ namespace Day10
 		{
 			var inputLines = await ReadInputLines();
 
-			var inputAsOrderedIntegers = inputLines.Select(int.Parse).OrderBy(x=>x).ToList();
+			var inputAsOrderedIntegers = inputLines.Select(int.Parse).OrderBy(x => x).ToList();
 
+			PartOne(inputAsOrderedIntegers);
+		}
+
+		private static void PartOne(List<int> inputAsOrderedIntegers)
+		{
 			var differences = new List<int>();
 
 			inputAsOrderedIntegers.Aggregate(0, (current, next) =>
