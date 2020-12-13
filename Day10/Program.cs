@@ -56,7 +56,7 @@ namespace Day10
 
 			for (var index = 0; index < input.Count(); index++)
 			{
-				var possibles = input.Where(i => i != input[index] && i - input[index] <= 3 && i - input[index] > 0).ToList();
+				var possibles = input.Where(i => i > input[index] && i - input[index] <= 3).ToList();
 				foreach (var possible in possibles)
 					lines.Add(new Tuple<int, long>(input[index], possible));
 			}
