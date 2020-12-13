@@ -18,8 +18,11 @@ namespace Day10
 
 			PartOne(inputAsOrderedIntegers);
 
-			//var pathCount = FollowPath(0, inputAsOrderedIntegers);
-			//Console.WriteLine($"There are {pathCount} possible adapter combinations");
+			PartTwo(inputAsOrderedIntegers);
+		}
+
+		private static void PartTwo(List<int> inputAsOrderedIntegers)
+		{
 			inputAsOrderedIntegers.Insert(0, 0);
 			var allLines = GetLinePairs(inputAsOrderedIntegers);
 			Console.WriteLine($"There are {allLines.Count()} graph lines");
@@ -45,7 +48,6 @@ namespace Day10
 			}
 			possibles = nodePaths.First(n => n.Item1 == 0).Item2;
 			Console.WriteLine($"There are {possibles} possibles");
-
 		}
 
 		private static List<Tuple<int, long>> GetLinePairs(List<int> input)
